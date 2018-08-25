@@ -54,7 +54,7 @@ async function getInfoWithDNI(dni) {
 			console.log('finished converting');
 
 			const tesseract = spawn('tesseract', [
-				'-psm',
+				'--psm',
 				'8',
 				'-c',
 				'tessedit_char_whitelist=ABCDEFGHIJKLMNÑOPQRSTUVWXYZ',
