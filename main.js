@@ -67,7 +67,8 @@ async function getInfoWithDNI(dni) {
 					.toString()
 					.trim()
 					.replace('\n', '')
-					.toUpperCase();
+					.toUpperCase()
+					.substring(0, 5);
 				console.log('captcha founded: ' + solvedCaptcha);
 				// console.log(solvedCaptcha);
 
