@@ -5,13 +5,13 @@ async function getInfoWithDNI(dni) {
 	return new Promise(async (resolve, reject) => {
 		let info;
 
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 		const page = await browser.newPage();
 		await page.setViewport({ width: 1280, height: 721 });
 		await page.goto(
 			'https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/frameCriterioBusqueda.jsp'
 		);
-
+		console.log('goto');
 		const tbodies = await page.$$('tbody');
 		const tbody = tbodies[tbodies.length - 1];
 		const trs = await tbody.$$('tr');
@@ -26,7 +26,7 @@ async function getInfoWithDNI(dni) {
 		await dniInput.type(dni);
 
 		const captcha = await page.$('img[name="imagen"]');
-
+		console.log('full captcha');
 		await captcha.screenshot({ path: 'captcha.png' });
 
 		// convert captcha.jpeg -colorspace Gray -auto-threshold Triangle  captcha-1.jpeg
@@ -49,7 +49,10 @@ async function getInfoWithDNI(dni) {
 			'0.1',
 			'captcha-1.png'
 		]);
+		console.log('converting and fixing captcha');
 		convert.on('exit', code => {
+			console.log('finished converting');
+
 			const tesseract = spawn('tesseract', [
 				'-psm',
 				'8',
@@ -58,13 +61,14 @@ async function getInfoWithDNI(dni) {
 				'captcha-1.png',
 				'-'
 			]);
+			console.log('scanning captcha');
 			tesseract.stdout.on('data', async data => {
 				solvedCaptcha = data
 					.toString()
 					.trim()
 					.replace('\n', '')
 					.toUpperCase();
-
+				console.log('captcha founded: ' + solvedCaptcha);
 				// console.log(solvedCaptcha);
 
 				const captchaInput = await page.$('input[name="codigo"]');
