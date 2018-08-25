@@ -83,12 +83,14 @@ async function getInfoWithDNI(dni) {
 				await page.screenshot({ path: 'example.png' });
 
 				let pages = await browser.pages();
-				// console.log('Total pages', pages.length);
+				console.log('Total pages', pages.length);
 
 				const table = await pages[pages.length - 1].$(
 					'table[cellspacing="1"]'
 				);
+
 				const trs = await (await table.$('tbody')).$$('tr');
+
 				const tr = await trs[trs.length - 1];
 
 				const userInfo = await tr.$$eval('td', tds => {
