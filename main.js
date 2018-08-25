@@ -69,7 +69,7 @@ async function getInfoWithDNI(dni) {
 					.replace('\n', '')
 					.toUpperCase()
 					.substring(0, 5);
-				console.log('captcha founded: ' + solvedCaptcha);
+				console.log('captcha founded: ' + '"' + solvedCaptcha + '"');
 				// console.log(solvedCaptcha);
 
 				const captchaInput = await page.$('input[name="codigo"]');
