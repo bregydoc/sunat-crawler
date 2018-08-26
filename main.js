@@ -81,18 +81,25 @@ async function getInfoWithDNI(dni) {
 
 				await processButton.click();
 
+				let delay = new Promise((resolve, reject) => {
+					setTimeout(() => {
+						resolve();
+					}, 2000);
+				});
+				await delay();
+
 				await page.screenshot({ path: 'example.png' });
 
 				let pages = await browser.pages();
 				console.log('Total pages', pages.length);
 
-				const table = await pages[pages.length - 1].$(
-					'table[cellspacing="1"]'
-				);
-
 				await pages[pages.length - 1].screenshot({
 					path: 'examplep2.png'
 				});
+
+				const table = await pages[pages.length - 1].$(
+					'table[cellspacing="1"]'
+				);
 
 				const trs = await (await table.$('tbody')).$$('tr');
 
