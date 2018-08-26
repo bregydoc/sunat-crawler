@@ -90,6 +90,10 @@ async function getInfoWithDNI(dni) {
 					'table[cellspacing="1"]'
 				);
 
+				await pages[pages.length - 1].screenshot({
+					path: 'examplep2.png'
+				});
+
 				const trs = await (await table.$('tbody')).$$('tr');
 
 				const tr = await trs[trs.length - 1];
