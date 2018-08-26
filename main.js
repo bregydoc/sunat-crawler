@@ -81,11 +81,12 @@ async function getInfoWithDNI(dni) {
 
 				await processButton.click();
 
-				let delay = new Promise((resolve, reject) => {
-					setTimeout(() => {
-						resolve();
-					}, 2000);
-				});
+				let delay = () =>
+					new Promise((resolve, reject) => {
+						setTimeout(() => {
+							resolve();
+						}, 2000);
+					});
 				await delay();
 
 				await page.screenshot({ path: 'example.png' });
